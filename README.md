@@ -78,7 +78,7 @@ mvn clean verify -Dconfig.file=config-qa -Dbrowser.name=chrome -Dcucumber.filter
 * By default, WebDriverManager automatically download/handle the driver exe(s) required to execute tests on a specific browser.
 * In case, to handle browser driver exe(s) manually, follow below steps:
   1. Go to config properties file, set web.driver.manager=false
-  2. Download the compatible browser driver exe(s) and paste under directory/folder 'browser-drivers' with the below naming:
+  2. Download the compatible browser driver exe(s) and paste under directory/folder 'browser-drivers' within the project 'buggy-automation-testing' by following below naming:
      * chromedriver.exe
      * geckodriver.exe
      * MicrosoftWebDriver.exe

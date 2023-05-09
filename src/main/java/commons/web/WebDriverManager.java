@@ -93,7 +93,7 @@ public class WebDriverManager {
      * @return the list of located WebElement
      * @throws NoSuchElementException if no element is found
      */
-    public List<WebElement> getWebElements(By locator) {  // findElements
+    public List<WebElement> getWebElements(By locator) {
         try {
             List<WebElement> webElements = driver.findElements(locator);
             LOGGER.info("Found " + webElements.size() + " WebElements with locator: " + locator);
