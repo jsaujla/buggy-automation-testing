@@ -2,7 +2,7 @@
 
 ### About the repository ###
 * The repository contains UI test automation assessment work on website 'buggy.justtestit'.
-* There are 5 test scenarios automated. Few test scenarios execute with different test data, so total tests are 15.
+* There are 5 test scenarios automated. Few test scenarios execute with different set of test data, which makes the total tests count 15.
 
 ### Prerequisite for execution ###
 * Java 11 or higher installed
