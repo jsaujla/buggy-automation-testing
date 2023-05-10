@@ -124,23 +124,25 @@ public class Hooks {
     }
 
     /**
-     * Closes the web browser window(s) and ends the WebDriver session.
-     */
-    private void quitWebDriver() {
-        if (dependencyContainer.webDriverManager.getDriver() != null) {
-            dependencyContainer.webDriverManager.getDriver().quit();
-            LOGGER.info("Web browser closed and WebDriver session ended successfully");
-        }
-    }
-
-    /**
      * Captures a screenshot and attaches it to the given scenario.
      *
      * @param scenario The scenario to attach the screenshot to
      */
     private void captureScreenshot(Scenario scenario) {
-        byte[] screenshot = dependencyContainer.webDriverManager.getScreenshotAsByte();
-        scenario.attach(screenshot, "image/png", "FailedScreenshot_" + scenario.getName());
+        if(dependencyContainer.webDriverManager != null) {
+            byte[] screenshot = dependencyContainer.webDriverManager.getScreenshotAsByte();
+            scenario.attach(screenshot, "image/png", "FailedScreenshot_" + scenario.getName());
+        }
+    }
+
+    /**
+     * Closes the web browser window(s) and ends the WebDriver session.
+     */
+    private void quitWebDriver() {
+        if (dependencyContainer.webDriverManager != null) {
+            dependencyContainer.webDriverManager.getDriver().quit();
+            LOGGER.info("Web browser closed and WebDriver session ended successfully");
+        }
     }
 
 }

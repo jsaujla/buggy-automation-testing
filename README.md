@@ -10,6 +10,8 @@
 * JAVA_HOME environment variable configured
 * MAVEN_HOME environment variable configured
 * Google Chrome web browser installed
+* Mozilla Firefox web browser installed (only if tests need to execute on Firefox)
+* Google Edge web browser installed (only if tests need to execute on Edge)
 
 ### Prerequisite for development ###
 * Java 11 or higher installed
@@ -64,9 +66,22 @@ mvn clean verify -Dbrowser.name=safari
 mvn clean verify -Dcucumber.filter.tags="@smoke"
 mvn clean verify -Dcucumber.filter.tags="@regression"
 ```
+* Execute tests in headless mode  (true, false):
+  * Default mode is as per configured in config properties file. Currently, it is 'false'
+  * The headless mode is applicable for chrome, firefox and edge. It would not support InternetExplorer and Safari
+```
+mvn clean verify -Dheadless=true
+```
 * Above mvn command parameters can also be used together. For example:
 ```
 mvn clean verify -Dconfig.file=config-qa -Dbrowser.name=chrome -Dcucumber.filter.tags="@smoke"
+```
+
+### Parallel test execution ###
+* Execute tests in parallel mode.
+  * Default thread count is as per configured in testng-parallel.xml file. Currently, it is '4'
+```
+mvn clean verify -Dsurefire.suiteXmlFiles=testng-parallel.xml
 ```
 
 ### Test execution results ###

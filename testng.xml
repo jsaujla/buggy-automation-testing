@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Buggy BDD Test Suite">
+    <test name="Buggy BDD Tests">
+        <classes>
+            <class name="org.justtestit.buggy.runner.TestNgRunner"/>
+        </classes>
+    </test>
+</suite>

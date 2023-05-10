@@ -3,8 +3,11 @@ package commons.web;
 import commons.properties.PropertiesManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -98,7 +101,7 @@ public class WebDriverManager {
             List<WebElement> webElements = driver.findElements(locator);
             LOGGER.info("Found " + webElements.size() + " WebElements with locator: " + locator);
             return webElements;
-        } catch (Throwable e) { //NoSuchElementException
+        } catch (Throwable e) {
             LOGGER.error("Failed to locate WebElement with locator: " + locator, e);
             throw e;
         }
@@ -260,14 +263,13 @@ public class WebDriverManager {
      * Switches to alert, and returns the Alert object.
      *
      * @return Alert object
-     * @throws NoAlertPresentException if the alert is not present
      */
     public Alert getAlert() {
         try{
             Alert alert = driver.switchTo().alert();
             LOGGER.info("Switched to alert successfully");
             return alert;
-        } catch (NoAlertPresentException e) {
+        } catch (Throwable e) {
             LOGGER.error("Failed to switch to alert", e);
             throw e;
         }
@@ -294,7 +296,6 @@ public class WebDriverManager {
      * Takes a screenshot of the current WebDriver instance and returns it as a byte array.
      *
      * @return The screenshot image as a byte array
-     * @throws RuntimeException if a screenshot cannot be captured.
      */
     public byte[] getScreenshotAsByte() {
         try{
@@ -302,9 +303,9 @@ public class WebDriverManager {
             byte[] screenshot = takesScreenshot.getScreenshotAs(OutputType.BYTES);
             LOGGER.info("Screenshot captured successfully");
             return screenshot;
-        } catch (WebDriverException  e) {
+        } catch (Throwable  e) {
             LOGGER.error("Failed to capture screenshot", e);
-            throw new RuntimeException("Failed to capture screenshot", e);
+            throw e;
         }
     }
 
@@ -326,15 +327,18 @@ public class WebDriverManager {
         String browserNameInConfig = propertiesManager.getProperty("web.browser.name").toLowerCase();
         String browserName = System.getProperty("browser.name", browserNameInConfig);
 
+        String headlessInConfig = propertiesManager.getProperty("headless");
+        String headless = System.getProperty("headless", headlessInConfig);
+
         switch(browserName) {
             case "chrome":
-                initializeChromeDriver();
+                initializeChromeDriver(headless);
                 break;
             case "firefox":
-                initializeFirefoxDriver();
+                initializeFirefoxDriver(headless);
                 break;
             case "edge":
-                initializeEdgeDriver();
+                initializeEdgeDriver(headless);
                 break;
             case "ie":
             case "internet explorer":
@@ -353,9 +357,9 @@ public class WebDriverManager {
     /**
      * Initializes the ChromeDriver with WebDriverManager or with the local executable.
      *
-     * @throws IllegalStateException if the ChromeDriver fails to initialize
+     * @param headless Whether to run Chrome in headless mode (true) or not (false)
      */
-    private void initializeChromeDriver() {
+    private void initializeChromeDriver(String headless) {
         if(propertiesManager.getPropertyAsBoolean("web.driver.manager")) {
             io.github.bonigarcia.wdm.WebDriverManager.chromedriver().setup();
         } else {
@@ -364,19 +368,23 @@ public class WebDriverManager {
             }
         }
         try {
-            driver = new ChromeDriver();
-        } catch (WebDriverException e) {
+            ChromeOptions options = new ChromeOptions();
+            if ("true".equals(headless)) {
+                options.addArguments("--headless=new");
+            }
+            driver = new ChromeDriver(options);
+        } catch (Throwable e) {
             LOGGER.error("Failed to initialize ChromeDriver", e);
-            throw new IllegalStateException("Failed to initialize ChromeDriver", e);
+            throw e;
         }
     }
 
     /**
      * Initializes the FirefoxDriver with WebDriverManager or with the local executable.
      *
-     * @throws IllegalStateException if the FirefoxDriver fails to initialize
+     * @param headless Whether to run Firefox in headless mode (true) or not (false)
      */
-    private void initializeFirefoxDriver() {
+    private void initializeFirefoxDriver(String headless) {
         if(propertiesManager.getPropertyAsBoolean("web.driver.manager")) {
             io.github.bonigarcia.wdm.WebDriverManager.firefoxdriver().setup();
         } else {
@@ -385,19 +393,23 @@ public class WebDriverManager {
             }
         }
         try {
-            driver = new FirefoxDriver();
-        } catch (WebDriverException e) {
+            FirefoxOptions options = new FirefoxOptions();
+            if ("true".equals(headless)) {
+                options.addArguments("-headless");
+            }
+            driver = new FirefoxDriver(options);
+        } catch (Throwable e) {
             LOGGER.error("Failed to initialize FirefoxDriver", e);
-            throw new IllegalStateException("Failed to initialize FirefoxDriver", e);
+            throw e;
         }
     }
 
     /**
      * Initializes the EdgeDriver with WebDriverManager or with the local executable.
      *
-     * @throws IllegalStateException if the EdgeDriver fails to initialize
+     * @param headless Whether to run Edge in headless mode (true) or not (false)
      */
-    private void initializeEdgeDriver() {
+    private void initializeEdgeDriver(String headless) {
         if(propertiesManager.getPropertyAsBoolean("web.driver.manager")) {
             io.github.bonigarcia.wdm.WebDriverManager.edgedriver().setup();
         } else {
@@ -406,17 +418,19 @@ public class WebDriverManager {
             }
         }
         try {
-            driver = new EdgeDriver();
-        } catch (WebDriverException e) {
+            EdgeOptions options = new EdgeOptions();
+            if ("true".equals(headless)) {
+                options.addArguments("--headless=new");
+            }
+            driver = new EdgeDriver(options);
+        } catch (Throwable e) {
             LOGGER.error("Failed to initialize EdgeDriver", e);
-            throw new IllegalStateException("Failed to initialize EdgeDriver", e);
+            throw e;
         }
     }
 
     /**
      * Initializes the InternetExplorerDriver with WebDriverManager or with the local executable.
-     *
-     * @throws IllegalStateException if the InternetExplorerDriver fails to initialize
      */
     private void initializeIeDriver() {
         if(propertiesManager.getPropertyAsBoolean("web.driver.manager")) {
@@ -431,16 +445,14 @@ public class WebDriverManager {
             options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
             options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
             driver = new InternetExplorerDriver(options);
-        } catch (WebDriverException e) {
+        } catch (Throwable e) {
             LOGGER.error("Failed to initialize InternetExplorerDriver", e);
-            throw new IllegalStateException("Failed to initialize InternetExplorerDriver", e);
+            throw e;
         }
     }
 
     /**
      * Initializes the SafariDriver with WebDriverManager or with the local executable.
-     *
-     * @throws IllegalStateException if the SafariDriver fails to initialize
      */
     private void initializeSafariDriver() {
         if(propertiesManager.getPropertyAsBoolean("web.driver.manager")) {
@@ -448,9 +460,9 @@ public class WebDriverManager {
         }
         try {
             driver = new SafariDriver();
-        } catch (WebDriverException e) {
+        } catch (Throwable e) {
             LOGGER.error("Failed to initialize SafariDriver", e);
-            throw new IllegalStateException("Failed to initialize SafariDriver", e);
+            throw e;
         }
     }
 

@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Buggy BDD Parallel Test Suite" parallel="tests" data-provider-thread-count="4">
+    <test name="Buggy BDD Tests">
+        <classes>
+            <class name="org.justtestit.buggy.runner.TestNgParallelRunner"/>
+        </classes>
+    </test>
+</suite>
