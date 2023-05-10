@@ -79,7 +79,7 @@ mvn clean verify -Dconfig.file=config-qa -Dbrowser.name=chrome -Dcucumber.filter
 
 ### Parallel test execution ###
 * Execute tests in parallel mode:
-  * Default thread count is as per configured in testng-parallel.xml file. Currently, it is '4'
+  * Default thread count is as per configured in testng-parallel.xml file. Currently, it is '3'
 ```
 mvn clean verify -Dsurefire.suiteXmlFiles=testng-parallel.xml
 ```
