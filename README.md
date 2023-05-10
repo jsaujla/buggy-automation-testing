@@ -2,7 +2,7 @@
 
 ### About the repository ###
 * The repository contains UI test automation assessment work on website 'buggy.justtestit'.
-* There are 5 test scenarios automated. Few test scenarios execute with different set of test data, which makes the total tests count 15.
+* There are 5 test scenarios automated. Few test scenarios execute with different set of test data, which makes the total test count 15.
 
 ### Prerequisite for execution ###
 * Java 11 or higher installed
@@ -11,7 +11,7 @@
 * MAVEN_HOME environment variable configured
 * Google Chrome web browser installed
 * Mozilla Firefox web browser installed (only if tests need to execute on Firefox)
-* Google Edge web browser installed (only if tests need to execute on Edge)
+* Microsoft Edge web browser installed (only if tests need to execute on Edge)
 
 ### Prerequisite for development ###
 * Java 11 or higher installed
@@ -78,7 +78,7 @@ mvn clean verify -Dconfig.file=config-qa -Dbrowser.name=chrome -Dcucumber.filter
 ```
 
 ### Parallel test execution ###
-* Execute tests in parallel mode.
+* Execute tests in parallel mode:
   * Default thread count is as per configured in testng-parallel.xml file. Currently, it is '4'
 ```
 mvn clean verify -Dsurefire.suiteXmlFiles=testng-parallel.xml
