@@ -46,6 +46,7 @@
 mvn clean verify
 ```
 * Execute tests on specific environment (dev, qa, uat, prod):
+  * Currently, 'config-dev.properties' and 'config-uat.properties' files are empty
 ```
 mvn clean verify -Dconfig.file=config-dev
 mvn clean verify -Dconfig.file=config-qa
@@ -100,9 +101,9 @@ mvn clean verify -Dsurefire.suiteXmlFiles=testng-parallel.xml
      * IEDriverServer.exe
 
 ### Project packages/structure ###
-* BDD test scenarios, refer feature files under directory '\src\test\resources\features'
-* Test script implementation, refer packages under directory '\src\test\java\org\justtestit\buggy'
-* Generic utils, refer packages under directory '\src\main\java\commons'
+* BDD test scenarios: Refer feature files under directory '\src\test\resources\features'
+* Test script implementation: Refer packages under directory '\src\test\java\org\justtestit\buggy'
+* Generic utils: Refer packages under directory '\src\main\java\commons'
 
 ### Who do I talk to ###
 * For more information contact: Jaspal Aujla at [jaspal.qa@outlook.com](mailto:jaspal.qa@outlook.com) or [jsaujla1@gmail.com](mailto:jsaujla1@gmail.com)
