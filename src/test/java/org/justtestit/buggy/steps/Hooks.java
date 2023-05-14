@@ -6,6 +6,7 @@ import org.justtestit.buggy.constant.Constants;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import org.openqa.selenium.OutputType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,9 +55,7 @@ public class Hooks {
      */
     @After()
     public void tearDown(Scenario scenario) {
-        if (scenario.isFailed()) {
-            captureScreenshot(scenario);
-        }
+        captureScreenshot(scenario);
         quitWebDriver();
         LOGGER.info("XXXXXXXXXX" + " END TEST SCENARIO " + "XXXXXXXXXX");
     }
@@ -124,14 +123,17 @@ public class Hooks {
     }
 
     /**
-     * Captures a screenshot and attaches it to the given scenario.
+     * Captures a screenshot and attaches it to the given scenario if the scenario has failed.
      *
      * @param scenario The scenario to attach the screenshot to
      */
     private void captureScreenshot(Scenario scenario) {
-        if(dependencyContainer.webDriverManager != null) {
-            byte[] screenshot = dependencyContainer.webDriverManager.getScreenshotAsByte();
+        if(scenario.isFailed() && dependencyContainer.webDriverManager != null) {
+            byte[] screenshot = dependencyContainer.webDriverManager.getTakesScreenshot().getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot, "image/png", "FailedScreenshot_" + scenario.getName());
+            LOGGER.info("Screenshot captured and attached to the given scenario");
+        } else {
+            LOGGER.info("Skipped capturing screenshot, because webDriverManager is null");
         }
     }
 
@@ -141,7 +143,9 @@ public class Hooks {
     private void quitWebDriver() {
         if (dependencyContainer.webDriverManager != null) {
             dependencyContainer.webDriverManager.getDriver().quit();
-            LOGGER.info("Web browser closed and WebDriver session ended successfully");
+            LOGGER.info("Closed web browser window(s) and ended the WebDriver session");
+        } else {
+            LOGGER.info("Skipped quiting WebDriver session, because webDriverManager is already null");
         }
     }
 

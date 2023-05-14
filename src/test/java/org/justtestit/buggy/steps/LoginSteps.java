@@ -49,7 +49,7 @@ public class LoginSteps extends PageInitializer {
     @Then("I should see the relevant user first name: {string}")
     public void i_should_see_the_relevant_user_first_name(String firstName) {
         LOGGER.info("Then I should see the relevant user first name: {string}");
-        Assert.assertTrue(getDashboardPage().isUserFirstNameDisplayed(firstName), "User first name not displayed");
+        Assert.assertTrue(getDashboardPage().isUserFirstNameDisplayed(firstName), "User first name '" + firstName + "' not displayed");
     }
 
     @Then("I should see error message: {string}")
@@ -67,7 +67,7 @@ public class LoginSteps extends PageInitializer {
                 e.printStackTrace();
             }
         } else {
-            Assert.assertTrue(getHomePage().isInvalidLoginErrorMessageDisplayed(errorMessage), "Error message not displayed");
+            Assert.assertTrue(getHomePage().isInvalidLoginErrorMessageDisplayed(errorMessage), "Error message '" + errorMessage + "' not displayed");
         }
     }
 

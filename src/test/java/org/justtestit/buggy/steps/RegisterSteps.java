@@ -1,6 +1,7 @@
 package org.justtestit.buggy.steps;
 
 import com.github.javafaker.Faker;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -42,7 +43,7 @@ public class RegisterSteps extends PageInitializer {
     }
 
     @When("I register with valid data")
-    public void i_register_with_valid_data(io.cucumber.datatable.DataTable dataTable) {
+    public void i_register_with_valid_data(DataTable dataTable) {
         LOGGER.info("When I register with valid data");
         List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -58,9 +59,9 @@ public class RegisterSteps extends PageInitializer {
     }
 
     @Then("I should see the notification message: {string}")
-    public void i_should_see_the_notification_message(String message) {
+    public void i_should_see_the_notification_message(String notificationMessage) {
         LOGGER.info("Then I should see the notification message: {string}");
-        Assert.assertTrue(getRegisterPage().isRegistrationSuccessfulMessageDisplayed(message), message + "not displayed");
+        Assert.assertTrue(getRegisterPage().isRegistrationSuccessfulMessageDisplayed(notificationMessage), "Notification message '" + notificationMessage + "' not displayed");
     }
 
     @When("I login with registered user")
@@ -70,7 +71,7 @@ public class RegisterSteps extends PageInitializer {
     }
 
     @Then("I should see the valid user info under user profile page")
-    public void i_should_see_the_valid_user_info_under_user_profile_page(io.cucumber.datatable.DataTable dataTable) {
+    public void i_should_see_the_valid_user_info_under_user_profile_page(DataTable dataTable) {
         LOGGER.info("Then I should see the valid user info under user profile page");
         List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
 
@@ -83,7 +84,7 @@ public class RegisterSteps extends PageInitializer {
     }
 
     @When("I try to register with existing user")
-    public void i_try_to_register_with_existing_user(io.cucumber.datatable.DataTable dataTable) {
+    public void i_try_to_register_with_existing_user(DataTable dataTable) {
         LOGGER.info("When I try to register with existing user");
         List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
         getRegisterPage().register(
@@ -97,7 +98,7 @@ public class RegisterSteps extends PageInitializer {
     @Then("I should see the error message: {string}")
         public void i_should_see_the_error_message(String errorMessage) {
         LOGGER.info("Then I should see the error message: {string}");
-        Assert.assertTrue(getRegisterPage().isUserAlreadyExistsErrorMessageDisplayed(errorMessage), errorMessage + "error message not displayed");
+        Assert.assertTrue(getRegisterPage().isUserAlreadyExistsErrorMessageDisplayed(errorMessage), "Error message '" + errorMessage + "' not displayed");
     }
 
 }

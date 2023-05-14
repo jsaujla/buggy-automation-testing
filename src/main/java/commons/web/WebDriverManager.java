@@ -30,13 +30,13 @@ public class WebDriverManager {
     /**
      * Constructs a new WebDriverManager with the specified properties manager.
      *
-     * @param propertiesManager the properties manager to use for configuring the WebDriver
+     * @param propertiesManager the properties manager to use for configuring the WebDriverManager
      */
     public WebDriverManager(PropertiesManager propertiesManager) {
         LOGGER.info("Constructing WebDriverManager with the specified properties manager");
         this.webDriverWaitTime = propertiesManager.getPropertyAsInt("web.driver.wait");
         WebDriverInitializer webDriverInitializer = new WebDriverInitializer(propertiesManager);
-        driver = webDriverInitializer.initializeWebDriver();
+        this.driver = webDriverInitializer.initializeWebDriver();
     }
 
     /**
@@ -45,7 +45,7 @@ public class WebDriverManager {
      * @return The initialized WebDriver object
      */
     public WebDriver getDriver() {
-        LOGGER.info("Get WebDriver");
+        LOGGER.info("Returning an initialized WebDriver");
         return driver;
     }
 
@@ -283,18 +283,17 @@ public class WebDriverManager {
     }
 
     /**
-     * Takes a screenshot of the current WebDriver instance and returns it as a byte array.
+     * Returns a TakesScreenshot object, which can be used to capture screenshots.
      *
-     * @return The screenshot image as a byte array
+     * @return a TakesScreenshot object
      */
-    public byte[] getScreenshotAsByte() {
+    public TakesScreenshot getTakesScreenshot() {
         try{
             TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
-            byte[] screenshot = takesScreenshot.getScreenshotAs(OutputType.BYTES);
-            LOGGER.info("Screenshot captured successfully");
-            return screenshot;
+            LOGGER.info("TakesScreenshot created successfully");
+            return takesScreenshot;
         } catch (Throwable  e) {
-            LOGGER.error("Failed to capture screenshot", e);
+            LOGGER.error("Failed to create TakesScreenshot object", e);
             throw e;
         }
     }
