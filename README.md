@@ -1,7 +1,7 @@
 # README #
 
 ### About the repository ###
-* The repository contains UI test automation assessment work on website 'buggy.justtestit'.
+* The repository contains web test automation demonstration work on website 'buggy.justtestit'.
 * There are 5 test scenarios automated. Few test scenarios execute with different set of test data, which makes the total test count 15.
 
 ### Prerequisite for execution ###
